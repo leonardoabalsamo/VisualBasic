@@ -1,0 +1,153 @@
+Sub p1()
+' PUNTO 1 TP 3 LABORATORIO
+
+'1. Escribir una macro que le solicite al usuario un número, y que escriba la tabla de
+'multiplicar de dicho número a partir de la celda A1.
+'Por ejemplo, si el usuario ingresa el número 4, se generará una Tabla que se verá de la
+'siguiente manera:
+'4 x 1 = 4
+'4 x 2 = 8
+'4 x 3 = 12
+'………………..
+'4 x 12 = 48
+
+Dim i As Byte
+Dim num As Integer
+
+MsgBox ("PUNTO 1 TP 3 LABORATORIO 2 PROFESORA: VILMA GIUDICE")
+
+num = InputBox("Por favor ingrese un número")
+
+Cells(1, 1) = "NUM INGRESADO"
+Cells(1, 2) = "X"
+Cells(1, 3) = "N"
+Cells(1, 4) = "RESULTADO"
+
+For i = 2 To num
+    Cells(i, 1) = num
+    Cells(i, 2) = "X"
+    Cells(i, 3) = i
+    Cells(i, 4) = num * i
+Next
+   
+
+
+'For num = 10 To 1 Step -1
+'MsgBox (num)
+'Next
+End Sub
+
+
+
+Sub p2()
+
+'PUNTO 2 TP 3 LABORATORIO
+
+'2. Armar una macro que al pedirle al usuario una palabra, la muestre letra por letra en la
+'columna A desde la primera fila. (En la macro se controlará que se haya ingresado una
+'sola palabra y no una frase)
+
+MsgBox ("PUNTO 2 TP 3 LABORATORIO 2 PROFESORA: VILMA GIUDICE")
+
+Dim palabra As String
+Dim i As Byte
+Dim frase As Byte
+Dim tamanio As Integer
+
+frase = 0
+
+palabra = InputBox("Ingrese la palabra")
+
+tamanio = Len(palabra) ' Guardo el tamaño de la variable en un int
+For i = 1 To tamanio
+    If Mid(palabra, i, 1) = " " Then
+        frase = 1
+    End If
+Next
+
+If frase = 0 Then
+    For i = 1 To tamanio
+        Cells(i, 1) = Mid(palabra, i, 1)
+    Next
+
+Else: MsgBox ("Ingresó una frase, por favor ingrese una palabra")
+End If
+
+    
+End Sub
+
+
+Sub p3()
+'3. Escribir una macro que al ingresar una frase la muestre al revés, mediante un MsgBox.
+Dim frase As String
+Dim alreves As String
+Dim concatenar As String
+Dim i As Integer
+
+
+
+Dim tamanio As Integer
+
+MsgBox ("PUNTO 3 TP 3 LABORATORIO 2 PROFESORA: VILMA GIUDICE")
+
+frase = InputBox("Ingrese la frase")
+tamanio = Len(frase)
+
+For i = tamanio To 1 Step -1
+    concatenar = concatenar + Mid(frase, i, 1)
+Next
+
+MsgBox (concatenar)
+
+
+End Sub
+
+Sub p4()
+'4. Escribir una macro que al pedir un nombre lo escriba 10 veces en la planilla desde la
+'celda A1 hasta la celda J10, formando una diagonal.
+
+Dim nombre As String
+Dim i As Byte
+Dim j As Byte
+Dim tamanio As Integer
+MsgBox ("PUNTO 4 TP 3 LABORATORIO 2 PROFESORA: VILMA GIUDICE")
+
+nombre = InputBox("Ingrese el nombre")
+tamanio = Len(nombre)
+
+For i = 1 To 11
+    Cells(i, i) = nombre
+Next
+
+End Sub
+
+
+Sub p5()
+'5. Crear una macro que escriba la matriz Identidad (unos en la diagonal principal y ceros
+'en el resto), habiéndole pedido al usuario cuál es la celda en la que desea que empiece
+'a escribirla y cuál es el orden de la misma (cantidad de filas).
+'Nota: las matrices Identidades son cuadradas, o sea tienen la misma cantidad de filas
+'que de columnas
+Dim cant As Integer
+Dim i As Byte
+Dim j As Byte
+Dim a As Characters
+Dim b As Integer
+Dim celda As Characters
+
+MsgBox ("PUNTO 5 TP 3 LABORATORIO 2 PROFESORA: VILMA GIUDICE")
+
+Range(InputBox("Ingrese la celda")).Activate
+
+cant = InputBox("Ingrese el orden")
+
+For i = 0 To cant
+    For j = 0 To cant
+        If i = j Then
+            ActiveCell.Offset(i, j) = 1
+        Else: ActiveCell.Offset(i, j) = 0
+        End If
+    Next
+Next
+
+End Sub

@@ -1,0 +1,199 @@
+Sub auto_open()
+MsgBox ("Bienvenido!!")
+
+
+accpers.Show
+
+
+End Sub
+
+
+Sub auto_close()
+
+MsgBox ("Hasta la próxima!!")
+
+End Sub
+
+
+Sub PUNTO3()
+Dim resultado As Byte
+
+
+
+resultado = MsgBox("¿Desea abrir el Formulario 1?", vbYesNo, "Punto 3")
+
+If resultado = 6 Then
+    MsgBox ("Ha decidido abrir el formulario 1")
+    formuno.Show
+Else
+    If resultado = 7 Then
+    MsgBox ("Ha decidido abrir el formulario 2")
+    formdos.Show
+End If
+End If
+
+End Sub
+
+
+
+
+---------------------------------------------------
+
+FORMULARIO 1:
+
+Private Sub UserForm_Initialize()
+Dim i As Byte
+
+For i = 1 To Sheets.Count
+    If Sheets(i).Name <> "Hoja1" Then
+    Sheets.Add.Name = "Hoja1"
+    End If
+    If Sheets(i).Name <> "Hoja2" Then
+    Sheets.Add.Name = "Hoja2"
+    End If
+    If Sheets(i).Name <> "Hoja3" Then
+    Sheets.Add.Name = "Hoja3"
+    End If
+Next
+
+End Sub
+
+
+
+
+'1. Armar un formulario que tenga tres campos de texto, un botón Aceptar, un botón Salir y un botón
+'Limpiar. El botón Aceptar deberá permitir que se copien los tres campos en las respectivas celdas
+'A1 de las tres primeras hojas del libro (el primer contenido del primer campo deberá figurar en
+'la primera hoja del libro, el segundo en la segunda hoja del libro y el tercero en la tercera hoja).
+'El botón Limpiar, borrará los campos del formulario y el botón Salir cerrará el formulario.
+'(Nota: al asignarles a un campo “” se lo blanquea, y lo mostrará como vacío. Por ejemplo,
+'Me!Descripcion=””)
+
+Private Sub BotonAceptar_Click()
+
+Sheets("Hoja1").Range("A1").Value = Me!f1.Value
+Sheets("Hoja2").Range("A1").Value = Me!f2.Value
+Sheets("Hoja3").Range("A1").Value = Me!f3.Value
+
+
+End Sub
+
+
+Private Sub BotonLimpiar_Click()
+
+Me!f1 = ""
+Me!f2 = ""
+Me!f3 = ""
+
+End Sub
+
+Private Sub BotonSalir_Click()
+Unload Me
+End Sub
+
+---------------------------------------------------------------------------------
+
+FORMULARIO 2:
+
+
+Private Sub UserForm_Initialize()
+Dim i As Byte
+
+
+For i = 1 To Sheets.Count
+    If Sheets(i).Name = "Stock" Then
+    Sheets("Stock").Activate
+    Else:
+    Sheets.Add.Name = "Stock"
+    Worksheets("Stock").Range("A1").Value = "ID"
+    Worksheets("Stock").Range("B1").Value = "Descripción"
+    Worksheets("Stock").Range("C1").Value = "Punto de Reposición"
+    Worksheets("Stock").Range("D1").Value = "Cantidad Existente"
+    Worksheets("Stock").Range("E1").Value = "Fecha de Alta"
+    End If
+Next
+
+Me!fecha = Date
+
+Cells(1, 1).Activate
+
+Do While (IsEmpty(ActiveCell) = False)
+    ActiveCell.Offset(1, 0).Activate
+Loop
+
+End Sub
+
+
+Private Sub BotonAceptar_Click()
+
+ActiveCell.Value = Me!ID
+ActiveCell.Offset(0, 1) = Me!Descripcion
+ActiveCell.Offset(0, 2) = Me!Punto
+ActiveCell.Offset(0, 3) = Me!Cantidad
+ActiveCell.Offset(0, 4) = Me!fecha
+ActiveCell.Offset(1, 0).Activate
+
+
+End Sub
+
+
+Private Sub BotonLimpiar_Click()
+
+Me!ID = ""
+Me!Descripcion = ""
+Me!Punto = ""
+Me!Cantidad = ""
+Me!fecha = ""
+
+End Sub
+
+Private Sub BotonSalir_Click()
+Unload Me
+End Sub
+
+
+
+------------------------------------------------------------------------------------------------------
+
+FORMULARIO ACCESO:
+
+
+
+Private Sub UserForm_Initialize()
+Dim i As Byte
+
+For i = 1 To Sheets.Count
+    If Sheets(i).Name = "Usuarios" Then
+    Sheets("Usuarios").Activate
+    Else
+    Sheets.Add.Name = "Usuarios"
+    End If
+Next
+
+Me!fecha = Date
+
+Cells(1, 1).Activate
+
+Do While (IsEmpty(ActiveCell) = False)
+    ActiveCell.Offset(1, 0).Activate
+Loop
+
+
+End Sub
+
+
+
+Private Sub Aceptar_Click()
+
+Sheets("Usuarios").Activate
+
+ActiveCell = Me!nombre
+ActiveCell.Offset(0, 1) = Me!apellido
+ActiveCell.Offset(0, 2) = Me!fecha
+ActiveCell.Offset(1, 0).Activate
+
+Unload Me
+End Sub
+
+
+

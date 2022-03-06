@@ -1,0 +1,46 @@
+Sub Formato()
+'
+' Formato Macro
+'
+
+'
+'    Range("B2").Select ' Selecciono la celda B2
+'    ActiveCell.FormulaR1C1 = "12"
+'    Range("B2").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 65535
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 255
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Selection.Font.Size = 12
+    Selection.Font.Size = 20
+    Selection.Font.Bold = True
+    Selection.Font.Italic = True
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 255
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 65535
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    With Selection.Font
+        .Color = -16776961
+        .TintAndShade = 0
+    End With
+End Sub

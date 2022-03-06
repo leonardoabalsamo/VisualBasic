@@ -1,0 +1,300 @@
+Sub punto1()
+'1. Armar una macro que pida 30 números naturales y calcule son esos datos su promedio.
+'Indicar de los 30 números cuántos son mayores que el promedio, cuántos son menores y
+'cuántos son iguales al promedio.
+
+Dim vec(30) As Integer
+Dim aux As Integer
+Dim suma As Integer
+Dim contmenor As Integer
+Dim contigual As Integer
+Dim promedio As Double
+Dim i As Integer
+
+contmenor = 0
+contigual = 0
+promedio = 0
+suma = 0
+
+
+
+For i = 0 To 29
+    aux = InputBox("Ingrese un numero entre 0 y 9")
+    If aux > 9 Or aux < 0 Then
+        MsgBox ("Ingresó un numero incorrecto, por favor ingrese un numero entre 0 y 9")
+        aux = InputBox("Ingrese un numero entre 0 y 9")
+    End If
+    vec(i) = aux
+    suma = suma + vec(i)
+Next
+
+promedio = suma / 30
+
+For i = 0 To 29
+    If vec(i) < promedio Then
+    contmenor = contmenor + 1
+    End If
+    If vec(i) = promedio Then
+    contigual = contigual + 1
+    End If
+    
+Next
+
+MsgBox ("El promedio es: " & promedio)
+MsgBox ("Existen " & contmenor & " numeros menores al promedio")
+MsgBox ("Existen " & contigual & " numeros iguales al promedio")
+
+MsgBox ("FIN DEL PROGRAMA")
+
+End Sub
+
+
+Sub punto2()
+'2. Armar una macro que pida dos listas de 10 números. Con esas dos listas deberán formar
+'una sola lista de 20 número de forma tal que los dos primeros sean los primeros de cada
+'lista y luego irían los dos segundos, los dos terceros, hasta ubicar los dos últimos de cada
+'lista. Por ejemplo, sean las dos listas: (4, 2, 6, 7, …, 10) y (5, 3, 6, 2, …, 8), la lista compuesta
+'que Uds. deben armar será 4, 5, 2, 3, 6, 6, 7, 2, …, 10, 8). Una vez armada esa nueva lista,
+'mostrarla en la primera hoja del libro en forma vertical desde la celda A1.
+
+Dim a(10) As Integer
+Dim b(10) As Integer
+Dim c(20) As Integer
+Dim i As Integer
+Dim j As Integer
+Sheets("hoja1").Select
+Cells(1, 1).Select
+
+For i = 0 To 9
+    a(i) = InputBox("Ingrese un numero")
+    b(i) = InputBox("Ingrese un segundo numero")
+Next
+
+j = 0
+
+For i = 0 To 19 Step 2
+    c(i) = a(j)
+    j = j + 1
+Next
+
+j = 0
+For i = 1 To 19 Step 2
+    c(i) = b(j)
+    j = j + 1
+Next
+
+For i = 0 To 19
+    ActiveCell.Offset(i, 0) = c(i)
+Next
+
+    
+End Sub
+
+
+Sub punto3()
+
+'3. Armar una macro que le solicite al usuario números hasta que ingrese “*”, controlar que lo
+'ingresado sean números y no caracteres (usar para esto una función). Con esta lista de
+'números preguntarle al usuario en qué orden desea mostrarla, si ascendente o
+'descendente. Un vez armada ordenada mostrarla.
+
+Dim v() As Integer
+Dim aux As String
+Dim i As Integer
+Dim j As Integer
+Dim str As String
+Dim valor As Integer
+Dim cont As Integer
+i = 0
+cont = 0
+valor = 0
+
+aux = InputBox("Ingrese un numero")
+
+ReDim v(cont) As Integer
+
+Do While aux <> "*"
+        If validarnum(aux) = True Then
+            v(i) = aux
+            i = i + 1
+            cont = cont + 1
+            ReDim Preserve v(cont) As Integer
+        Else
+            MsgBox ("Ingresó un caracter!! Ingrese un numero:")
+        End If
+        
+        aux = InputBox("Ingrese un numero:")
+Loop
+
+str = InputBox("¿Desea mostrarlo en orden ascendente? SI/NO")
+
+If str = SI Then
+    For i = 0 To cont - 1
+        For j = i + 1 To cont
+            If v(i) > v(j) Then
+                valor = v(i)
+                v(i) = v(j)
+                v(j) = valor
+            End If
+        Next
+    Next
+Else
+    For i = 0 To cont - 1
+        For j = i + 1 To cont
+            If v(i) < v(j) Then
+                valor = v(i)
+                v(i) = v(j)
+                v(j) = valor
+            End If
+        Next
+    Next
+End If
+
+
+For i = 0 To cont - 1
+    ActiveCell.Offset(i, 1) = v(i)
+Next
+
+
+End Sub
+
+Sub punto4()
+'4. Armar una macro que pida 50 números enteros y los guarde en un vector, y que muestre
+'en pantalla cuáles son el mayor y el menor número almacenados y cuántas veces se repiten
+'ambos. Además, deberá calcular y mostrar en dos totalizadores separados las sumas de los
+'componentes del vector que se encuentran en las ubicaciones de índice par, y la de los de
+'índice impar.
+
+Dim vec(50) As Integer
+Dim mayor As Integer
+Dim menor As Integer
+Dim contpar As Integer
+Dim contimpar As Integer
+Dim i As Integer
+
+mayor = 0
+menor = 999
+contpar = 0
+contimpar = 0
+
+
+
+For i = 0 To 49
+    vec(i) = InputBox("Ingrese el numero")
+    If vec(i) > mayor Then
+        mayor = vec(i)
+    End If
+    If vec(i) < menor Then
+        menor = vec(i)
+    End If
+    If i Mod 2 = 0 Then
+        contpar = contpar + vec(i)
+    Else
+        contimpar = contimpar + vec(i)
+    End If
+    ActiveCell.Offset(i, 0) = vec(i)
+Next
+
+For i = 0 To 49
+    If vec(i) = mayor Then
+        contmayor = contmayor + 1
+    End If
+    If vec(i) = menor Then
+        contmenor = contmenor + 1
+    End If
+Next
+
+MsgBox ("El mayor numero ingresado es " & mayor & " y se repite " & contmayor & " veces")
+MsgBox ("El menor numero ingresado es " & menor & " y se repite " & contmenor & " veces")
+MsgBox ("La sumatoria de los numeros ingresados en el índice par es " & contpar)
+MsgBox ("La sumatoria de los numeros ingresados en el índice inpar es " & contimpar)
+
+
+End Sub
+Sub punto5()
+
+'5. Dada una frase contar cuántas palabras tiene. Separar la frase en palabras, ubicando cada
+'una de ellas en las celdas de una misma columna (la columna de la celda activa). Devolver
+'la frase sin los espacios entre palabras, guardando las ubicaciones de cada uno de esos
+'espacios en un vector, el que también se mostrará por pantalla.
+
+Dim frase As String
+Dim str As String
+Dim tam As Integer
+Dim vec() As String
+Dim cont As Integer
+Dim k As Integer
+Dim espacios() As Integer
+Dim aux As String
+
+k = 0
+cont = 1
+
+ReDim espacios(k) As Integer
+
+frase = InputBox("Ingrese la frase")
+
+tam = Len(frase)
+
+
+For i = 1 To tam
+        If Mid(frase, i, 1) = " " Then
+            cont = cont + 1
+        End If
+Next
+
+MsgBox ("La frase ingresada tiene " & cont & " Palabras")
+
+
+ReDim vec(cont) As String
+
+For i = 1 To cont
+    For j = 1 To tam
+        If Mid(frase, j, 1) <> " " Then
+            vec(i) = vec(i) & Mid(frase, j, 1)
+        Else
+                espacios(k) = j
+                k = k + 1
+                ReDim Preserve espacios(k) As Integer
+                i = i + 1
+                
+        End If
+        
+    Next
+Next
+
+For i = 1 To cont
+    ActiveCell.Offset(i, 0) = vec(i)
+    str = str & vec(i)
+Next
+
+MsgBox ("Se muestra la frase ingresada sin espacios: " & str)
+
+For i = 0 To k - 1
+    aux = aux & " " & espacios(i)
+Next
+
+MsgBox ("Los espacios se encuentran en las posiciones: " & aux)
+
+End Sub
+
+
+Function validarnum(variable As String) As Boolean
+    
+    Dim i As Byte
+    Dim j As Byte
+    Dim contador As Integer
+    contador = 0
+    For i = 1 To Len(variable) Step 1
+        For j = 0 To 9 Step 1
+            If Mid(variable, i, 1) = j Then
+                contador = contador + 1
+            End If
+        Next
+    Next
+    If contador = Len(variable) Then
+    validarnum = True
+    Else
+    validarnum = False
+    End If
+End Function

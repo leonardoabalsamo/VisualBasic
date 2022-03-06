@@ -1,0 +1,210 @@
+Sub punto1()
+'1. Armar una función que, dado un número, devuelva todos sus divisores.
+'Nota: la función debe devolver una cadena de caracteres compuesta por los divisores del
+'número dado.
+
+Dim num As Double
+
+MsgBox ("TP nº7 Funciones Punto 1")
+num = InputBox("Ingrese el numero:")
+
+MsgBox ("Los divisores de " & num & " son: " & (divisor(num)))
+
+End Sub
+
+Sub punto2()
+Dim num1 As Double
+Dim num2 As Double
+MsgBox ("TP nº7 Funciones Punto 2")
+
+'2. Sabiendo que en Matemáticas se define como “máximo común divisor” (MCD) de dos
+'números enteros al mayor número entero que divide a los dos sin dejar resto. Por ejemplo,
+'el mcd de 48 y 60 es 12. Armar una función que permita calcular el mcd de dos números
+'dados.
+'Nota: se puede calcular con los factores comunes a ambos números elevados a su menor
+'exponente, o usar el algoritmo de Euclides que indica que, siendo a > b, entonces el
+'MCD(a,b) = MCD(b,resto de dividir a con b) y el MCD(a,0) = a. Así, por ejemplo,
+'MCD(60, 48) = MCD(48, 12) = MCD(12, 0) = 12
+
+num1 = InputBox("Ingrese un numero: ")
+num2 = InputBox("Ingrese otro numero: ")
+
+MsgBox ("El Máximo Común Divisor es: " & mcd(num1, num2))
+
+End Sub
+
+Sub punto3()
+'3. Armar una función que dado dos números enteros nos dé el “mínimo común múltiplo”
+'(mcm) de dichos números.
+'Nota: usar como base la función anterior
+
+MsgBox ("TP nº7 Funciones Punto 3")
+
+Dim num3 As Double
+Dim num4 As Double
+
+num3 = InputBox("Ingrese un numero: ")
+num4 = InputBox("Ingrese otro numero: ")
+
+MsgBox ("El mínimo común múltiplo es: " & mcm(num3, num4))
+
+End Sub
+Sub punto4()
+'4. Armar una función lógica (devuelva Verdadero o Falso) para validar que una variable
+'contenga sólo letras, o sea, que no contega números. Por ejemplo, si se la aplica a CASA1
+'devueva Falso y si se la aplica a MESA devuelva Verdadero.
+Dim str As String
+
+MsgBox ("TP nº7 Funciones Punto 4")
+str = InputBox("Ingrese una variable: ")
+
+If validar(str) = True Then
+    MsgBox ("Ingresó solo letras")
+Else
+    MsgBox ("Ingresó una variable con números")
+End If
+
+End Sub
+Sub punto5()
+'5. Armar una función lógica (devuelva Verdadero o Falso) para validar que una variable
+'contenga sólo números, o sea, que no contega otro tipo de caracteres. Por ejemplo, si se la
+'aplica a 12A devueva Falso y si se la aplica a 123 devuelva Verdadero.
+
+Dim str1 As String
+
+MsgBox ("TP nº7 Funciones Punto 5")
+str1 = InputBox("Ingrese una variable: ")
+
+If validarnum(str1) = True Then
+    MsgBox ("Ingresó solo numeros")
+Else
+    MsgBox ("Ingresó una variable con otros caracteres")
+End If
+
+End Sub
+Sub punto6()
+
+'6. Escriba un algoritmo para que al recibir como entrada un número entero N, indique el
+'enésimo número de la serie de Fibonacci
+
+Dim numero As Integer
+MsgBox ("TP nº7 Funciones Punto 6")
+numero = InputBox("Ingrese un numero:")
+
+MsgBox ("El " & numero & " de Fibonacci es " & algoritmo(numero))
+
+End Sub
+Function algoritmo(n As Integer) As Double
+    Dim i As Double
+    Dim j As Double
+    Dim cont As Integer
+    
+    i = 1
+    j = 0
+    '   j, i ,
+    '            j + i = i
+    ' 0, 1 , 1 , 2, 3, 5, 8, 13, 21, 34, 55, 89, 144...
+    
+    If n <> 1 And n <> 2 Then
+        For cont = 3 To n
+            i = j + i
+            j = i - j
+        Next
+        algoritmo = i
+    End If
+    If n = 1 Then
+        algoritmo = 0
+    If n = 2 Then
+        algoritmo = 1
+    End If
+    End If
+    
+End Function
+Function validarnum(variable As String) As Boolean
+    
+    Dim i As Byte
+    Dim j As Byte
+    Dim contador As Integer
+    contador = 0
+    For i = 1 To Len(variable) Step 1
+        For j = 0 To 9 Step 1
+            If Mid(variable, i, 1) = j Then
+                contador = contador + 1
+            End If
+        Next
+    Next
+    If contador = Len(variable) Then
+    validarnum = True
+    Else
+    validarnum = False
+    End If
+End Function
+Function validar(frase As String) As Boolean
+    
+    Dim i As Integer
+    Dim j As Integer
+    Dim flag As Byte
+    flag = 0
+    For i = 1 To Len(frase) Step 1
+        For j = 0 To 9 Step 1
+            If Mid(frase, i, 1) = j Then
+                flag = 1
+                Exit For
+            End If
+        Next
+    Next
+    
+    If flag = 1 Then
+    validar = False
+    Else
+    validar = True
+    End If
+End Function
+
+Function mcm(a As Double, b As Double) As Double
+    mcm = (a * b) / (mcd(a, b))
+End Function
+
+
+Function mcd(a As Double, b As Double) As Double
+    Dim resto As Double
+    Dim mayor As Double
+    Dim menor As Double
+    
+    If a > b Then
+        menor = b
+    Else
+        menor = a
+    End If
+    
+    For i = 1 To menor Step 1
+        If a Mod i = 0 And b Mod i = 0 Then
+            If i > mayor Then
+                mayor = i
+            End If
+        End If
+    Next
+    
+    mcd = mayor
+    
+End Function
+
+
+
+Function divisor(n As Double) As String
+    
+    Dim str As String
+    Dim resto As Integer
+    
+        ' mod devuelve el resto
+    For i = 1 To n Step 1
+        resto = n Mod i
+        If resto = 0 Then
+                str = str & " " & i
+        End If
+    Next
+        
+    divisor = str
+        
+    
+End Function

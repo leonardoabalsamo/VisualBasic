@@ -1,0 +1,176 @@
+Sub PUNTO1()
+'
+' PUNTO1 Macro
+'1. Diseñar una macro que le solicite al usuario un número, lo escriba en la celda activa, controle
+'si dicho número es par o impar, y que escriba, en la celda de la derecha de la celda activa,
+'una leyenda que diga si es par o impar.
+Dim AUX As Integer
+Dim RESTO As Byte
+
+MsgBox ("TRABAJO PRACTICO NRO 4 PUNTO 1")
+
+
+AUX = InputBox("Ingrese un Numero")
+RESTO = AUX Mod 2
+
+If RESTO = 0 Then
+ActiveCell.Offset(0, 1) = "ES PAR"
+Else: ActiveCell.Offset(0, 1) = "ES INPAR"
+End If
+
+'
+End Sub
+
+Sub PUNTO2()
+'2. Armar una macro que le pida al usuario una palabra (se deberá reingresar el dato en caso de
+'que no cumpla la condición y se continuará recién cuando se haya ingresado una sola
+'palabra) y la escriba en mayúsculas, letra por letra, en la primera columna (a partir de A1)
+'de una nueva hoja de la planilla, llamada “Palabra”.
+Dim str As String
+Dim i As Byte
+Dim frase As Byte
+
+
+MsgBox ("TRABAJO PRACTICO NRO 4 PUNTO 2")
+
+frase = 0
+
+Do
+    str = InputBox("Ingrese una palabra")
+    For i = 1 To Len(str)
+        If (Mid(str, i, 1) = " ") Then
+            frase = 1
+            Exit For
+        Else: frase = 0
+        End If
+    Next
+Loop While (frase = 1)
+
+
+i = 1
+
+Worksheets.Add.Name = "PALABRA"
+
+Do While (frase = 0 And i <= Len(str))
+    Cells(i, 1) = UCase(Mid(str, i, 1))
+    i = i + 1
+Loop
+
+End Sub
+
+Sub PUNTO3()
+
+'3. Diseñar una macro que nos permita armar el listado de usuarios autorizados a nuestro
+'sistema. Se ingresarán los apellidos de esos usuarios, hasta que se ingrese “*“ (marca que
+'acabará el ingreso de apellidos). Tener en cuenta que cada vez que se ejecute el programa,
+'se deberán escribir los nuevos usuarios debajo de la lista anterior, o sea se podrán agregar
+'usuarios autorizados en cada ejecución. Cada usuario tendrá un número consecutivo en
+'función de su orden de carga. Utilizar como registro una nueva hoja “Usuarios Autorizados”
+'de la planilla, la que para ello deberá crear con anterioridad.
+Dim str As String
+Dim i As Byte
+Dim flag As Byte
+Dim nombrehoja As String
+flag = 0
+
+nombrehoja = "USUARIOS AUTORIZADOS"
+
+For i = 1 To Sheets.Count
+    If Sheets(i).Name = nombrehoja Then
+        MsgBox ("LA HOJA USUARIOS AUTORIZADOS SE ENCUENTRA DISPONIBLE")
+    Else:
+    Sheets.Add.Name = nombrehoja
+    End If
+Next
+
+
+    
+'Cells(1, 1) = "USUARIOS AUTORIZADOS"
+
+Do
+    str = InputBox("Ingrese el Apellido del Usuario")
+    For i = 1 To Len(str)
+        If Mid(str, i, 1) = "*" Then
+            MsgBox ("Finaliza el ingreso de apellidos")
+            flag = 1
+            Exit For
+        End If
+    Next
+    If str <> "*" Then
+        ActiveCell.Offset(1, 0).Activate
+        ActiveCell = str
+    End If
+        
+Loop While (flag = 0)
+
+            
+End Sub
+Sub PUNTO4()
+
+'4. Diseñar una macro que sólo permita el ingreso de números pares por teclado, con un ingreso
+'máximo de 15 números. Con estos números, calcular su suma y su promedio, escribiendo
+'esos dos resultados en una nueva hoja de la planilla, llamada “Resultados”
+Dim NUM As Integer
+Dim AUX As Byte
+Dim SUMA As Integer
+Dim PROM As Double
+
+AUX = 0
+
+
+Do
+
+    NUM = InputBox("Ingrese el numero")
+        If NUM Mod 2 = 1 Then
+            flag = 1
+            MsgBox ("EL NUMERO INGRESADO NO ES PAR")
+        Else
+            SUMA = SUMA + NUM
+            AUX = AUX + 1
+        End If
+Loop While (flag = 0 And AUX < 15)
+
+If flag = 1 Then
+    MsgBox ("NO SE REALIZA LA CUENTA YA QUE NO INGRESO NUMEROS PARES")
+Else
+    PROM = SUMA / AUX
+    Worksheets.Add.Name = "Resultados"
+    Cells(1, 1) = "La suma es  " & SUMA
+    Cells(2, 1) = "El promedio es  " & PROM
+End If
+
+
+
+End Sub
+
+
+Sub PUNTO5()
+'5. Armar una macro que le solicite al usuario su Apellido, controle si el mismo figura en la lista
+'de personas autorizadas (figuran en la primera columna de la hoja “Usuarios Autorizados”)
+'e informe el resultado de ese control mediante un mensaje acorde, por ejemplo, “Persona
+'no autorizada” o “Persona autorizada, ¡Bienvenida!”.
+'(Nota: armar esta macro después de haber completado correctamente el Ejercicio 3)
+'
+Dim str As String
+Worksheets("Usuarios Autorizados").Select
+
+Range("A1").Activate
+
+str = InputBox("Ingrese su apellido")
+
+Do
+
+    If ActiveCell.Value = str Then
+        MsgBox ("Persona autorizada, ¡Bienvenida!")
+        Exit Do
+    Else: ActiveCell.Offset(1, 0).Select
+    End If
+
+Loop Until (IsEmpty(ActiveCell))
+
+
+If IsEmpty(ActiveCell) Then
+     MsgBox ("Persona no autorizada")
+End If
+
+End Sub

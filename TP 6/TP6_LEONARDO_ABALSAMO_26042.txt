@@ -1,0 +1,332 @@
+Sub auto_open()
+
+
+MsgBox ("BIENVENIDO")
+
+
+'1. Armar una macro autoejecutable que abra un formulario, cómo si fuera un menú, que sólo tenga
+'botones para seleccionar cada una de las macro de los demás ejercicios del Trabajo Práctico. O
+'sea, deberá tener un botón de Alta de Productos, otro botón de Compra de Productos, otro
+'botón de Venta de Productos y un botón de Cambio de Divisas.
+
+MENU.Show
+
+
+End Sub
+
+
+--------------
+Private Sub altaprod_Click()
+alta.Show
+End Sub
+
+Private Sub cambiodiv_Click()
+cambiodivisa.Show
+End Sub
+
+Private Sub compraprod_Click()
+compraproducto.Show
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub
+
+Private Sub ventaprod_Click()
+ventaproducto.Show
+End Sub
+
+----------------------------
+
+
+Private Sub aceptar_Click()
+
+If Me!id <> "" And Me!desc <> "" And Me!talle <> "" And Me!punto <> "" And Me!existente <> "" And Me!precio <> "" Then
+ActiveCell.Value = Me!id
+ActiveCell.Offset(0, 1) = Me!desc
+ActiveCell.Offset(0, 2) = Me!talle
+ActiveCell.Offset(0, 3) = Me!punto
+ActiveCell.Offset(0, 4) = Me!existente
+ActiveCell.Offset(0, 5) = Me!fecha
+ActiveCell.Offset(0, 6) = Me!precio
+ActiveCell.Offset(1, 0).Activate
+Else: MsgBox ("¡Debe completar la totalidad de los campos!")
+End If
+
+End Sub
+
+
+Private Sub cancelar_Click()
+
+Unload Me
+
+End Sub
+
+Private Sub limpiar_Click()
+
+Me!id = ""
+Me!talle = ""
+Me!punto = ""
+Me!existente = ""
+Me!precio = ""
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'2. Armar una macro para, mediante un formulario, dar de alta a productos en la hoja de “Stock” de
+'acuerdo con la siguiente estructura de tabla de la Planilla:
+'ID Descripción Talle Punto Reposición Existente Fecha alta Precio Unitario
+'D38 Zapatillas Dama 38 10 80 23/2/2019 1550
+'N05 Zapatillas Niños 5 15 30 12/01/2020 1620
+
+' VER QUE ONDA CON ESTO.
+
+
+Dim i As Byte
+Dim cont As Integer
+
+
+For i = 1 To Worksheets.Count
+    If Worksheets(i).Name = "Stock" Then
+    cont = 1
+    End If
+    
+Next
+
+If cont = 1 Then
+    Worksheets("Stock").Activate
+    Else
+    Worksheets.Add.Name = "Stock"
+    Worksheets("Stock").Range("A1") = "ID"
+    Worksheets("Stock").Range("B1") = "Descripción"
+    Worksheets("Stock").Range("C1") = "Talle"
+    Worksheets("Stock").Range("D1") = "Punto Reposición"
+    Worksheets("Stock").Range("E1") = "Existente"
+    Worksheets("Stock").Range("F1") = "Fecha de Alta"
+    Worksheets("Stock").Range("G1") = "Precio Unitario"
+End If
+    
+Cells(1, 1).Activate
+
+Do While (IsEmpty(ActiveCell) = False)
+    ActiveCell.Offset(1, 0).Activate
+Loop
+
+Me!fecha = Date
+
+End Sub
+
+-------------------------------
+
+Private Sub aceptar_Click()
+
+Dim cont As Byte
+Dim suma As Integer
+
+cont = 0
+
+Do While (IsEmpty(ActiveCell) = False)
+    If Me!id = ActiveCell Then
+    cont = 1
+    suma = Me!cantidad
+    ActiveCell.Offset(0, 4) = ActiveCell.Offset(0, 4).Value + suma
+    ActiveCell.Offset(1, 0).Select
+    End If
+    ActiveCell.Offset(1, 0).Select
+Loop
+
+If cont = 0 Then MsgBox ("El artículo no existe!")
+
+
+End Sub
+
+
+
+Private Sub limpiar_Click()
+
+Me!id = ""
+Me!cantidad = ""
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'3. Armar una macro que nos permita actualizar las cantidad en existencia de la hoja de “Stock” del
+'ejercicio anterior cuando se compran artículos. Tener en cuenta que cada compra debe modificar
+'la cantidad en existencia pero, previamente controlará que el artículo exista (si ni existe indicarlo
+'mediante un mensaje).
+
+Sheets("Stock").Activate
+Cells(1, 1).Activate
+
+
+End Sub
+
+-----------------
+
+Private Sub aceptar_Click()
+
+Dim cont As Byte
+Dim resta As Integer
+
+cont = 0
+
+Do While (IsEmpty(ActiveCell) = False)
+    If Me!id = ActiveCell Then
+    cont = 1
+    resta = Me!cantidad
+    ActiveCell.Offset(0, 4) = ActiveCell.Offset(0, 4).Value - resta
+    If (ActiveCell.Offset(0, 4) <= ActiveCell.Offset(0, 3)) Then
+        MsgBox ("Para el articulo " & Me!id & " se debe colocar una orden de compra")
+        End If
+    ActiveCell.Offset(1, 0).Select
+    End If
+    ActiveCell.Offset(1, 0).Select
+Loop
+
+If cont = 0 Then MsgBox ("El artículo no existe!")
+
+
+End Sub
+
+
+
+Private Sub limpiar_Click()
+
+Me!id = ""
+Me!cantidad = ""
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'4. Armar una macro para vender los artículos de la hoja de “Stock”. Tener en cuenta que cada venta
+'debe modificar la cantidad en existencia. Recordar que, si como consecuencia de esa venta la
+'cantidad existente pasa a ser igual o menor al Punto de reposición, deberá mostrar una leyenda
+'para indicar que “Para el articulo … (detallar ID)… se debe colocar una Orden de compra.
+
+Sheets("Stock").Activate
+Cells(1, 1).Activate
+
+
+End Sub
+
+
+-------------------------------
+
+
+
+
+Private Sub cambiarmoneda_Click()
+
+Dim var As Double
+
+var = 0
+
+'Moneda                     Compra      Venta
+'Real                        11,53      11,54
+'Dólar                       68,75      69,75
+'Euro                        72,92      73,30
+'Pesos Colombianos           0,019      0,02
+
+
+
+If (Me!compra) = True Then
+    ActiveCell.Offset(0, 1) = "Compra"
+    ActiveCell = (Me!cantcambiar)
+    If Me!dolar = True Then
+        var = (Me!cantcambiar) / 68.75
+        ActiveCell.Offset(0, 3) = "U$s" & Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Dólar"
+    End If
+    If (Me!pesocolomb) = True Then
+        var = (Me!cantcambiar) / 0.019
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "PesoColombiano"
+    End If
+    If Me!euro = True Then
+        var = (Me!cantcambiar) / 72.92
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Euro"
+    End If
+    If Me!real = True Then
+        var = (Me!cantcambiar) / 11.53
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Real"
+    End If
+End If
+
+If Me!venta = True Then
+    ActiveCell.Offset(0, 1) = "Venta"
+    ActiveCell = Me!cantcambiar
+    If Me!dolar = True Then
+        var = (Me!cantcambiar) * 69.75
+        ActiveCell.Offset(0, 3) = "U$s" & Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Dólar"
+    End If
+    If Me!pesocolomb = True Then
+        var = (Me!cantcambiar) * 0.02
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "PesoColombiano"
+    End If
+    If Me!euro = True Then
+        var = (Me!cantcambiar) * 73.3
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Euro"
+    End If
+    If Me!real = True Then
+        var = (Me!cantcambiar) * 11.54
+        ActiveCell.Offset(0, 3) = Round(var, 2)
+        ActiveCell.Offset(0, 2) = "Real"
+    End If
+
+End If
+ActiveCell.Offset(0, 4) = Date
+Me!cantmoneda = Round(var, 2)
+ActiveCell.Offset(1, 0).Select
+
+End Sub
+
+
+Private Sub UserForm_Initialize()
+'5. Necesitamos un programa que nos devuelva la cantidad de Pesos Argentinos que vamos a recibir
+'si vendemos (cambiamos) una cierta cantidad de Dólares, o Pesos Colombianos, o Euros, o
+'Reales. Ese programa debe también servirnos para comprar Dólares, o Pesos Colombianos, o
+'Euros, o Reales. En el caso de la venta de una moneda distinta al Peso Argentino, se ingresará la
+'cantidad de esa moneda que queremos cambiar y nos indicará cuánto se obtiene en Pesos
+'Argentinos. En el caso de la compra de una moneda distinta al Peso Argentino, nos devolverá la
+'cantidad de Pesos Argentinos que se deberán entregar. Usar un formulario como el de la figura
+'adjunta. A su vez guardar la información de la venta/compra con los montos respectivos y la
+'fecha del día, en la hoja “Cambio” del libro activo. (Para los cálculos usar como valores de divisas
+'los que figuran en la tabla adjunta).
+
+Dim i As Byte
+Dim cont As Integer
+'
+For i = 1 To Sheets.Count
+    If Sheets(i).Name = "Cambio" Then
+    cont = 1
+    End If
+Next
+
+If cont = 1 Then
+    Sheets("Cambio").Activate
+Else:
+    Sheets.Add.Name = "Cambio"
+    Worksheets("Cambio").Range("A1") = "Cantidad"
+    Worksheets("Cambio").Range("B1") = "Operación"
+    Worksheets("Cambio").Range("C1") = "Moneda"
+    Worksheets("Cambio").Range("D1") = "Cantidad requerida"
+    Worksheets("Cambio").Range("E1") = "Fecha"
+End If
+
+
+Cells(1, 1).Activate
+
+Do While (IsEmpty(ActiveCell) = False)
+    ActiveCell.Offset(1, 0).Activate
+Loop
+
+
+End Sub

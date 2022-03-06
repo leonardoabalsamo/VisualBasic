@@ -1,0 +1,135 @@
+Sub PUNTO1()
+
+'1. Diseñar una macro que le solicite al usuario que ingrese un número, para que la macro lo
+'escriba en la celda activa, controle si dicho número es el número 23, y que escriba, en la
+'celda de la derecha de la celda activa, una leyenda que diga “El número es 23”.
+
+
+MsgBox ("PROGRAMA TP Nº2 PUNTO 1")
+
+'Solicito el ingreso al usuario
+
+ActiveCell = InputBox("POR FAVOR INGRESE UN NUMERO: ")
+
+If ActiveCell = 23 Then ActiveCell.Offset(0, 1) = ("El número es 23")
+
+
+End Sub
+
+
+Sub PUNTO2()
+'2. Generalizar el algoritmo anterior para que sirva para comparar al número ingresado con
+'cualquier otro número, y escriba una leyenda que sea acorde al número ingresado.
+'(Sugerencia: utilizar una variable dentro del programa)
+
+Dim numero As Integer
+
+MsgBox ("PROGRAMA TP Nº2 PUNTO 2")
+
+'Solicito el ingreso al usuario
+
+numero = InputBox("POR FAVOR INGRESE UN NUMERO: ")
+
+
+If ActiveCell = numero Then
+ActiveCell.Offset(0, 1) = ("El número es " & numero)
+End If
+
+
+End Sub
+
+Sub PUNTO3()
+
+
+'3. Armar una macro que le solicite al usuario que ingrese su nombre, y sí el mismo termina en
+'“a“, escribirlo sin ella, pero concatenarle la terminación “ita“, y si termina con “o“,
+'concatenarle “ito“. En caso contrario, decirle al usuario “Qué lindo nombre tiene“.
+'(Nota: Mostrar en pantalla el nombre resultante en mayúscula).
+
+Dim nombre As String
+
+
+nombre = InputBox("POR FAVOR INGRESE SU NOMBRE")
+
+
+'InputBox se usa para solicitar datos
+'MsgBox se usa para mostrar datos
+
+If Right(nombre, 1) = "a" Then
+MsgBox (Left(nombre, (Len(nombre) - 1)) + "ita")
+Else
+If Right(nombre, 1) = "o" Then
+MsgBox (Left(nombre, (Len(nombre) - 1)) + "ito")
+Else: MsgBox ("QUE LINDO NOMBRE TIENES")
+End If
+End If
+
+End Sub
+
+
+Sub PUNTO4()
+'4. Amar una macro que le solicite al usuario un número y que a este número lo escriba en la
+'celda activa. Luego, pedirle que escriba en tres celdas consecutivas, en vertical, desde
+'donde está el cursor el doble, el triplo y la mitad del valor ingresado
+
+ActiveCell = InputBox("Ingrese un numero")      ' solicito el dato y lo escribo en la celda activa
+ActiveCell.Offset(1, 0) = 2 * ActiveCell        ' Duplico el dato de la celda activa
+ActiveCell.Offset(2, 0) = 3 * ActiveCell        ' triplico el dato de la celda activa
+ActiveCell.Offset(3, 0) = ActiveCell / 2        ' divido por 2 el dato de la celda activa
+
+
+End Sub
+
+Sub PUNTO5()
+'5. Construir una macro que le pida al usuario que ingrese una frase, y luego:
+'a) la ubique en la celda A1,
+'b) en la celda A2 la muestre con todas sus letras en mayúsculas,
+'c) en la celda A3 con todas sus letras en minúsculas y
+'d) en la celda A4 indique cuantos caracteres tiene la frase.
+
+Dim frase As String                     'Dimensiono una variable del tipo string
+
+
+frase = InputBox("INGRESE UNA FRASE")   'Solicito la frase y la guardo en la variable
+
+Cells(1, 1) = frase                     'Escribo la frase en la celda A1
+
+Cells(2, 1) = UCase(frase)              'Escribo la frase en mayuscula en la celda A2
+
+Cells(3, 1) = LCase(frase)              'Escribo la frase en minuscula A3
+
+Cells(4, 1) = Len(frase)                'Escribo la cantidad de caracteres de la frase en A4
+
+
+End Sub
+
+Sub PUNTO6()
+
+'6. Construir una macro que le pida al usuario que ingrese su nombre y su apellido, cada uno
+'en una variable diferente, y con ellos crear las siglas del usuario, dando la primera letra de
+'su nombre y la primera letra de su apellido juntas, en mayúsculas (por ejemplo: ingresado
+'Vilma Giudice, deberá devolver VG). Asimismo, deberá escribir en la celda activa el Apellido,
+'en la celda ubicada a la derecha de la celda activa el Nombre, y en la derecha de esta última
+'la sigla del usuario.
+
+Dim nombre As String
+Dim apellido As String
+Dim N As String
+Dim A As String
+
+
+nombre = InputBox("Ingrese su nombre")
+apellido = InputBox("Ingrese su apellido")
+
+N = UCase(Left(nombre, 1))          'Guardo en la variable N la primera letra en mayuscula del nombre
+A = UCase(Left(apellido, 1))        'Guardo en la variable A la primera letra en mayuscula del apellido
+
+MsgBox (N & A)                      'Muestro en pantalla las siglas
+
+ActiveCell = apellido               'Escribo el apellido en la celda activa
+ActiveCell.Offset(0, 1) = nombre    'Escribo el nombre en la celda contigua
+ActiveCell.Offset(0, 2) = N + A     'Escribo las iniciales
+
+
+
+End Sub
